@@ -8,6 +8,9 @@
             {% for i in site.nav %}
             <li><a href="{{ i[1] | relative_url }}">{{ i[0] }}</a></li>
             {% endfor %}
+            {% if site.RSS == true %}
+                <li><a href="{{ "/rss.xml" | relative_url }}">RSS</a></li>
+            {% endif %}
         </ul>
     </nav>
 </header>
