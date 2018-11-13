@@ -33,7 +33,6 @@ $(document).ready(function(){
             var navClassName = 'nav-' + themeStyle;
 
             if (scrollTop > headerHeight) {
-                console.log(window.BASEURL)
                 if(scrollTop > 3 * headerHeight) {
                     header.addClass('headerUp');
                 }
