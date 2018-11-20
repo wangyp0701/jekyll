@@ -171,11 +171,6 @@ a {
 
 .home-content {
   margin: 40px auto 60px; }
-  .home-content:before, .home-content:after {
-    content: '';
-    display: table; }
-  .home-content:after {
-    clear: both; }
 
 .article-list {
   float: left;

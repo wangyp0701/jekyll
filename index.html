@@ -15,7 +15,7 @@ description: 好的代码像粥一样，都是用时间熬出来的
     <h3>{{ page.description }}</h3>
 </div>
 
-<main class="g-container home-content">
+<div class="g-container home-content">
     <div class="article-list">
         {% for post in paginator.posts %}
             <article class="article-item">
@@ -99,6 +99,7 @@ description: 好的代码像粥一样，都是用时间熬出来的
 
     </aside>
 
+    <div style="clear:both;" />
 </main>
 
 {% include footer.html %}
