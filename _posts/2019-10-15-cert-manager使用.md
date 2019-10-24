@@ -1,10 +1,10 @@
 ---
 layout: post
 title: cert-manager的安装与Ingress使用
+subtitle: 'cert-manager'
 date: 2019-10.15
 categories: blog
 tags: [cert-manager,Ingress]
-description: 文章金句。
 ---
 # cert-manager的安装与Ingress使用
 * 安装cert-manager
