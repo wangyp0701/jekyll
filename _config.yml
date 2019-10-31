@@ -1,7 +1,7 @@
 # Site settings 配置站点
-title: 'WYP的博客'
-description: 'WYP的博客'
-keyword: 'WYP的博客'
+title: 'WANGYP的博客'
+description: 'WANGYP的博客'
+keyword: 'WANGYP的博客'
 url: 'https://www.wangyp.cf' # your host
 
 # if you don't need baseurl, you should leave this value blank.
