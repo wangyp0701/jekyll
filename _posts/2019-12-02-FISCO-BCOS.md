@@ -563,12 +563,12 @@ bash ./nodeA/start_all.sh
 scp ./group/group.2.genesis 192.168.0.41:~/generator-B/meta/
 ```
 
-### 机构A为现有节点初始化群组2
+### 机构B为现有节点初始化群组2
 
-在~/generator-A目录下执行下述命令
+在~/generator-B目录下执行下述命令
 
 ```bash
-cd ~/generator-A
+cd ~/generator-B
 ```
 
 添加群组2配置文件至已有节点，此步将群组2创世区块`group.2.genesis`添加至./nodeB下的所有节点内：
@@ -577,7 +577,7 @@ cd ~/generator-A
 ```bash
 ./generator --add_group ./meta/group.2.genesis ./nodeB
 ```
-重启机构A节点:
+重启机构B节点:
 
 ```bash
 bash ./nodeB/stop_all.sh
