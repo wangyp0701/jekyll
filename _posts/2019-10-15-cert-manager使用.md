@@ -387,6 +387,7 @@ data:
 - 颁发证书
 
 * dns01支持通配符
+
 ```bash
 apiVersion: cert-manager.io/v1alpha2
 kind: Certificate
