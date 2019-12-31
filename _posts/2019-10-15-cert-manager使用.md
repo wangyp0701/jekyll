@@ -344,8 +344,9 @@ spec:
   - alidns-webhook.default.svc
 ```
   
-  - Issuer示例 这是测试用server
-  ```bash
+- Issuer示例 这是测试用server
+
+```bash
 apiVersion: cert-manager.io/v1alpha2
 kind: Issuer
 metadata:
@@ -369,8 +370,10 @@ spec:
             secretKeySecretRef:
               name: alidns-secret
               key: secret-key
-  ```
+```
+  
 - aliyun密钥key base64加密过的
+
 ```bash
 apiVersion: v1
 kind: Secret
@@ -380,6 +383,7 @@ data:
   access-key: xxxxxxxxxxxxxxxxxxxxx
   secret-key: xxxxxxxxxxxxxxxxxxxxxxx
 ```
+
 - 颁发证书
 
 * dns01支持通配符
