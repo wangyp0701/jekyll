@@ -30,6 +30,7 @@ description: 文章金句。
 * [官方文档](https://uwsgi-docs.readthedocs.io/en/latest/)
 
 p.ini
+
 ```bash
 [uwsgi]
 #socket=127.0.0.1:5003
