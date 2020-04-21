@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 ---
 layout: post
 title: uwsgi gunicorn nginx 配置
