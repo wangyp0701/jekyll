@@ -5,7 +5,7 @@ keyword: 'WANGYP的博客'
 url: 'https://www.wangyp.cf' # your host
 
 # if you don't need baseurl, you should leave this value blank.
-baseurl: '/'
+baseurl: ''
 
 # Navigation links
 nav:
@@ -38,7 +38,7 @@ mathjax: true
 
 # Share
 social-share: true
-social-share-items: ['wechat', 'weibo']
+social-share-items: ['wechat', 'weibo','douban','twitter']
 
 # theme color 主题皮肤
 theme-color: 'pink'  # pink or default
