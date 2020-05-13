@@ -163,8 +163,9 @@ spec:
 
 * 浏览器访问kubernetes-dashboard.k8s.wangyp.win会跳转到github认证
 
-![renzheng](https://wangyp.cf/assets/img/20200513162035.png)
+![renzheng](https://wangyp.cf/assets/img/20200513162343.png)
 
 * 认证成功后跳转dashboard
 
-![renzheng](https://wangyp.cf/assets/img/20200513162343.png)
+![rz](https://wangyp.cf/assets/img/20200513162035.png)
+
