@@ -1,5 +1,5 @@
 ---
-layout: k8s
+layout: post
 title: oauth2认证
 date: 2020-05-13
 categories: blog
