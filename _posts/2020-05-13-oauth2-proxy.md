@@ -10,20 +10,21 @@ tags: [Kubernetes-dashboard,oauth2-proxy]
 
 ## 前言
 
-开放公网访问Kubernetes仪表板的最佳方法是使用身份验证代理。这是位于服务前的代理，仅在用户通过身份验证后才允许流量通过。这里基于开源[oauth2-proxy的身份验证](https://github.com/oauth2-proxy/oauth2-proxy) 。它与Kubernetes仪表板一起可以很好地工作。
+* 开放公网访问Kubernetes仪表板的最佳方法是使用身份验证代理。这是位于服务前的代理，仅在用户通过身份验证后才允许流量通过。这里基于开源[oauth2-proxy的身份验证](https://github.com/oauth2-proxy/oauth2-proxy) 。它与Kubernetes仪表板一起可以很好地工作。
 
-这里我演示的是已经安装配置好的Kubernetes-dashboard基础上添加oauth2-proxy认证
+* 这里我演示的是已经安装配置好的Kubernetes-dashboard基础上添加oauth2-proxy认证
 
-在此示例中，我们还将使用GitHub作为我们的身份验证提供程序。oauth2_proxy支持多个供应商。有关详细信息，请参阅该官方文档。
+* 在此示例中，我们还将使用GitHub作为我们的身份验证提供程序。oauth2_proxy支持多个供应商。有关详细信息，请参阅该官方文档。
 
-流程图，我们将看到如下所示的内容。请求流量将遵循粗体箭头。Ingress将使用“cert-manager”获取将在互联网上使用的证书。在oauth2_proxy随后将与[GitHub](https://github.com) 进行身份验证（将用户访问重定向到GitHub上）。认证通过后，流量将传递到仪表板，并将使用API​​服务器。
+* 流程图，我们将看到如下所示的内容。请求流量将遵循粗体箭头。Ingress将使用“cert-manager”获取将在互联网上使用的证书。在oauth2_proxy随后将与[GitHub](https://github.com) 进行身份验证（将用户访问重定向到GitHub上）。认证通过后，流量将传递到仪表板，并将使用API​​服务器。
 
 ![流程图](https://wangyp.cf/assets/img/1_My-azKvnd_VgJsbRKWPlNw.png)
 
 ## 建立GitHub oauth2应用
-oauth2_proxy支持添加github个人或组织
-登录 [https://github.com/settings/developers](https://github.com/settings/developers) 并创建一个新的oauth应用程序。记录id，Secret信息。正确的关键是回调URL。
-将域名设置为 **自己的域名**
+
+* oauth2_proxy支持添加github个人或组织
+* 登录 [https://github.com/settings/developers](https://github.com/settings/developers) 并创建一个新的oauth应用程序。记录id，Secret信息。正确的关键是回调URL。
+* 将域名设置为 **自己的域名**
 
 ![](https://wangyp.cf/assets/img/20200513154536.png)
 
@@ -102,7 +103,7 @@ spec:
 
 ## 配置Ingress
 
-这里使用Authorization header方式认证Dashboard [Dashboard认证](https://github.com/kubernetes/dashboard/blob/master/docs/user/access-control/README.md#bearer-token)
+* 这里使用Authorization header方式认证Dashboard [Dashboard认证](https://github.com/kubernetes/dashboard/blob/master/docs/user/access-control/README.md#bearer-token)
 
 ```bash
 ---
@@ -160,10 +161,10 @@ spec:
 
 ## 访问
 
-浏览器访问kubernetes-dashboard.k8s.wangyp.win会跳转到github认证
+* 浏览器访问kubernetes-dashboard.k8s.wangyp.win会跳转到github认证
 
 ![renzheng](https://wangyp.cf/assets/img/20200513162035.png)
 
-认证成功后跳转dashboard
+* 认证成功后跳转dashboard
 
 ![renzheng](https://wangyp.cf/assets/img/20200513162343.png)
