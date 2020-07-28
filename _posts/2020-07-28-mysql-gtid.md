@@ -119,3 +119,5 @@ insert into xxxx select *from data_mgr;
  set gtid_next='AUTOMATIC' --自动的寻找GTID事务。
 
  start slave; --开始同步
+ 
+ * 转载(https://www.cnblogs.com/caicz/p/10855605.html)
