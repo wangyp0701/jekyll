@@ -3,14 +3,15 @@ layout: post
 title: mysql
 date: 2020-07-28
 categories: blog
-tags: [dtid,mysql]
+tags: [gtid,mysql]
 ---
 
 
 # mysql 基于gtid配置主从集群
 
 * 从MySQL 5.6.5 开始新增了一种基于 GTID 的复制方式。通过 GTID 保证了每个在主库上提交的事务在集群中有一个唯一的ID。这种方式强化了数据库的主备一致性，故障恢复以及容错能力。
-* GTID (Global Transaction ID)是全局事务ID,当在主库上提交事务或者被从库应用时，可以定位和追踪每一个事务，对DBA来说意义就很大了，我们可以适当的解放出来，不用手工去可以找偏移量的值了，而是通过CHANGE MASTER TO MASTER_HOST='xxx', MASTER_AUTO_POSITION=1的即可方便的搭建从库，在故障修复中也可以采用MASTER_AUTO_POSITION=‘X’的方式。
+
+* GTID (Global Transaction ID)是全局事务ID,当在主库上提交事务或者被从库应用时，可以定位和追踪每一个事务，对DBA来说意义就很大了，我们可以适当的解放出来，不用手工去可以找偏移量的值了，而是通过`CHANGE MASTER TO MASTER_HOST='xxx',,MASTER_USER='xx',MASTER_PASSWORD='xxx' MASTER_AUTO_POSITION=1`的即可方便的搭建从库，在故障修复中也可以采用MASTER_AUTO_POSITION=‘X’的方式。
 * 具体请查看[官网介绍](http://dev.mysql.com/doc/refman/5.6/en/replication-gtids-concepts.html)
 
 ----
