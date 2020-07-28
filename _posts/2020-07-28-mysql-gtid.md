@@ -13,13 +13,15 @@ tags: [dtid,mysql]
 * GTID (Global Transaction ID)是全局事务ID,当在主库上提交事务或者被从库应用时，可以定位和追踪每一个事务，对DBA来说意义就很大了，我们可以适当的解放出来，不用手工去可以找偏移量的值了，而是通过CHANGE MASTER TO MASTER_HOST='xxx', MASTER_AUTO_POSITION=1的即可方便的搭建从库，在故障修复中也可以采用MASTER_AUTO_POSITION=‘X’的方式。
 * 具体请查看[官网介绍](http://dev.mysql.com/doc/refman/5.6/en/replication-gtids-concepts.html)
 
+----
+
 * 可能大多数人第一次听到GTID的时候会感觉有些突兀，但是从架构设计的角度，GTID是一种很好的分布式ID实践方式，通常来说，分布式ID有两个基本要求：
 
  1）全局唯一性
 
  2）趋势递增
 
-* 这个ID因为是全局唯一，所以在分布式环境中很容易识别，因为趋势递增，所以ID是具有相应的趋势规律，在必要的时候方便进行顺序提取，行业内适用较多的是基于Twitter的ID生成算法snowflake,所以换一个角度来理解GTID，其实是一种优雅的分布式设计。
+这个ID因为是全局唯一，所以在分布式环境中很容易识别，因为趋势递增，所以ID是具有相应的趋势规律，在必要的时候方便进行顺序提取，行业内适用较多的是基于Twitter的ID生成算法snowflake,所以换一个角度来理解GTID，其实是一种优雅的分布式设计。
 
 1. 如何开启GTID
 
@@ -49,19 +51,23 @@ tags: [dtid,mysql]
 
 create table xxx as select的语句，其实会被拆分为两部分，create语句和insert语句，但是如果想一次搞定，MySQL会抛出如下的错误。
 
+```bash
 mysql> create table test_new as select *from test;
 
 ERROR 1786 (HY000): Statement violates GTID consistency: CREATE TABLE ... SELECT.
+```
 
 这种语句其实目标明确，复制表结构，复制数据，insert的部分好解决，难点就在于create table的部分，如果一个表的列有100个，那么拼出这么一个语句来就是一个工程了。
 
 除了规规矩矩的拼出建表语句之外，还有一个方法是MySQL特有的用法 like。
 
+```bash
 create table xxx as select 的方式可以拆分成两部分，如下。
 
 create table xxxx like data_mgr;
 
 insert into xxxx select *from data_mgr;
+```
 
 2）临时表的限制和建议
 
