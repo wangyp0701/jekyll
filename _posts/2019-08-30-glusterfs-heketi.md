@@ -232,14 +232,14 @@ kubectl apply -n glusterfs -f heketi-deployment.json
 
 * 修改heketi.json内的auth字段
  Use_auth : true
- ![user_auth](https://wangyp.cf/img/user_auth.png)
+ ![user_auth](https://wangyp.cf/assets/img/user_auth.png)
 
 * 创建storageclass字段需要添加认证,可以直接填写restuserkey key值，但是建议创建secretKey值
- ![storage-class](https://wangyp.cf/img/storageclass.png)
+ ![storage-class](https://wangyp.cf/assets/img/storageclass.png)
 * 生成一个Secret
- ![secret-key](https://wangyp.cf/img/secret-key.png)
+ ![secret-key](https://wangyp.cf/assets/img/secret-key.png)
 * Heketi client端添加环境变量
-![heketi-client](https://wangyp.cf/img/heketi-client.png)
+![heketi-client](https://wangyp.cf/assets/img/heketi-client.png)
 
 
 
