@@ -15,10 +15,10 @@ tags: [openvpn,google_authenticator]
  市面上有基于硬件的，也有基于软件的产品，具体可以另搜啊，本人喜欢开源的东东，并找到了Google开源的二次认证系统[Google Authenticator](https://github.com/google/google-authenticator) ，可以利用智能手机生产30秒动态口令配合登陆，该验证器提供了一个六位数的一次性密码。目前ios 和Android 都有客户端供于下载。
 
 * 功能
-1 实现登陆时，先输入用户帐号密码，在下一步输入动态口令。如果口令失败，不会进行登录。
-2 实现连接OpenVPN服务器时，结合客户端证书，帐号密码，通过动态验证码认证登录。
-3 部署完成后，即使手机客户端不能上网，整个二步验证系统还是可以正常运行的。
-4 动态口令在验证时用到了时间，所以要保持时间上的一致性。
+1. 实现登陆时，先输入用户帐号密码，在下一步输入动态口令。如果口令失败，不会进行登录。
+2. 实现连接OpenVPN服务器时，结合客户端证书，帐号密码，通过动态验证码认证登录。
+3. 部署完成后，即使手机客户端不能上网，整个二步验证系统还是可以正常运行的。
+4. 动态口令在验证时用到了时间，所以要保持时间上的一致性。
 
 
 ## 安装openvpn google_authenticator_libpam
@@ -110,6 +110,8 @@ echo "$PASS" > ${DIR_CLIENT}/sshpass.txt
 # run the google authenticator as the local user and save the code
 su ${NAME_CLIENT} -c "/usr/local/bin/google-authenticator -C -t -f -D -r 3 -Q UTF8 -R 30 -w 3 -l ${MFA_LABEL} " > ${DIR_CLIENT}/authenticator_code.txt
 ```
+
+
 
 ## openvpn服务端配置
 
