@@ -59,14 +59,14 @@ set_var  EASYRSA_DIGEST        "sha256"
 
 
 *  启动PKI目录，并使用下面的命令建立CA密钥
-./easyrsa init-pki
-./easyrsa build-ca
+- ./easyrsa init-pki
+- ./easyrsa build-ca
 * 并使用我们的CA证书签署“ vpn.example.org”密钥
-./easyrsa build-server-full  vpn.example.org nopass
+- ./easyrsa build-server-full  vpn.example.org nopass
 * 使用以下命令生成Diffie-Hellman密钥
-./easyrsa gen-dh
+- ./easyrsa gen-dh
 * CRL（证书吊销列表）密钥将用于吊销客户端密钥
-./easyrsa gen-crl
+- ./easyrsa gen-crl
 
 
 
