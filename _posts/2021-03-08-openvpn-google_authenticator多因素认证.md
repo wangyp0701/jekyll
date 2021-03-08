@@ -9,12 +9,15 @@ tags: [openvpn,google_authenticator]
 # 如何配置OpenVPN使用Google_Authenticator多因素认证
 
 * 双因素认证
+
  双因素身份认证就是通过你所知道再加上你所能拥有的这二个要素组合到一起才能发挥作用的身份认证系统。双因素认证是一种采用时间同步技术的系统，采用了基于时间、事件和密钥三变量而产生的一次性密码来代替传统的静态密码。每个动态密码卡都有一个唯一的密钥，该密钥同时存放在服务器端，每次认证时动态密码卡与服务器分别根据同样的密钥，同样的随机参数（时间、事件）和同样的算法计算了认证的动态密码，从而确保密码的一致性，从而实现了用户的认证。说白了，就像我们几年前去银行办卡送的口令牌，以及网易游戏中的将军令，在你使用网银或登陆游戏时会再让你输入动态口令的。
 
 * 产品种类
+
  市面上有基于硬件的，也有基于软件的产品，具体可以另搜啊，本人喜欢开源的东东，并找到了Google开源的二次认证系统[Google Authenticator](https://github.com/google/google-authenticator) ，可以利用智能手机生产30秒动态口令配合登陆，该验证器提供了一个六位数的一次性密码。目前ios 和Android 都有客户端供于下载。
 
 * 功能
+
 1. 实现登陆时，先输入用户帐号密码，在下一步输入动态口令。如果口令失败，不会进行登录。
 2. 实现连接OpenVPN服务器时，结合客户端证书，帐号密码，通过动态验证码认证登录。
 3. 部署完成后，即使手机客户端不能上网，整个二步验证系统还是可以正常运行的。
@@ -24,14 +27,17 @@ tags: [openvpn,google_authenticator]
 ## 安装openvpn google_authenticator_libpam
 
 * 我这里以centos7为例安装
+
 ```bash
 yum install openvpn easy-rsa google-authenticator -y
 ```
 
+## 生成openvpn所需证书
+
 * 安装完成后将easy-rsa复制到/etc/openvpn
 
-## 生成openvpn所需证书
 * 编辑配置文件
+
 ```bash
 cp -a /usr/share/easy-rsa/3.0.8 /etc/openvpn/easy-rsa
 cd /etc/openvpn/easy-rsa
@@ -52,7 +58,7 @@ set_var  EASYRSA_DIGEST        "sha256"
 ```
 
 
-* 启动PKI目录，并使用下面的命令建立CA密钥
+*  启动PKI目录，并使用下面的命令建立CA密钥
 ./easyrsa init-pki
 ./easyrsa build-ca
 * 并使用我们的CA证书签署“ vpn.example.org”密钥
@@ -64,7 +70,7 @@ set_var  EASYRSA_DIGEST        "sha256"
 
 
 
-## pam  配置google_authenticator
+##  pam  配置google_authenticator
 * /etc/pam.d/下创建认证配置文件
 ```bash
 vim /etc/pam.d/openvpn
