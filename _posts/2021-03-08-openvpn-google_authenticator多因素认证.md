@@ -85,14 +85,21 @@ account required     pam_permit.so
 ```bash
 vim c-client.sh
 # set the variables we'll use later
-NAME_CLIENT="client0001"
-MFA_LABEL="OPENVPN-${NAME_CLIENT}"
+#NAME_CLIENT="client0016"
+read -p "请输入要创建的账户名:" NAME_CLIENT
+MFA_LABEL="${NAME_CLIENT}"
 DIR_CLIENT="/etc/openvpn/clients/${NAME_CLIENT}"
- 
+#EMAIL=$(read -p 请输入邮箱: )
+read -p "请输入邮箱:"  EMAIL
+
 # create the certificate and key
-cd "/etc/openvpn"
-/etc/openvpn/easy-rsa/easyrsa build-client-full "${NAME_CLIENT}" nopass
- 
+if [ ! -d /home/$NAME_CLIENT ]; then
+  cd "/etc/openvpn"
+  /etc/openvpn/easy-rsa/easyrsa build-client-full "${NAME_CLIENT}" nopass || exit 1
+else
+  echo "帐号已存在"
+  exit 1
+fi
 # create a directory to save all the files
 mkdir -p "${DIR_CLIENT}"
  
@@ -108,13 +115,25 @@ sed -i "s#CLIENT_NAME#${NAME_CLIENT}#g" "${DIR_CLIENT}/${NAME_CLIENT}.ovpn"
 sed -i "s#PLATFORM_NAME#vpn.example.org#g" "${DIR_CLIENT}/${NAME_CLIENT}.ovpn"
  
 # create a new local user
-PASS=$(head -n 4096 /dev/urandom | tr -dc a-zA-Z0-9 | cut -b 1-10)
-useradd -m "${NAME_CLIENT}"
+PASS=$(head -n 4096 /dev/urandom | tr -dc a-zA-Z0-9 | cut -b 1-20)
+useradd -m "${NAME_CLIENT}" 
 echo "$PASS" | passwd --stdin ${NAME_CLIENT}
 echo "$PASS" > ${DIR_CLIENT}/sshpass.txt
  
 # run the google authenticator as the local user and save the code
-su ${NAME_CLIENT} -c "/usr/local/bin/google-authenticator -C -t -f -D -r 3 -Q UTF8 -R 30 -w 3 -l ${MFA_LABEL} " > ${DIR_CLIENT}/authenticator_code.txt
+su ${NAME_CLIENT} -c "/usr/local/bin/google-authenticator -C -t -f -D -r 3 -Q UTF8 -R 30 -w 3 -l ${MFA_LABEL} -i vpn.yappam " > ${DIR_CLIENT}/authenticator_code.txt 
+
+TOKEN=`cat ${DIR_CLIENT}/authenticator_code.txt|awk 'NR==3{print $6}'`
+qrencode -o png/${NAME_CLIENT}.png -s 6 "otpauth://totp/${NAME_CLIENT}?secret=$TOKEN&issuer=vpn.yappam"
+
+#Email account, password, profile
+echo -e "附件是google-authenticator Token二维码，请勿泄漏给他人"| mail -s "google-authenticator Token" -a png/${NAME_CLIENT}.png $EMAIL
+#head -3 ${DIR_CLIENT}/authenticator_code.txt | mail -s "google-authenticator Token"  $EMAIL
+
+#zip -r zip/$NAME_CLIENT.zip `ls clients/${NAME_CLIENT}/*|grep -v -e authenticator_code.txt -e sshpass.txt`
+zip -rq zip/$NAME_CLIENT.zip `ls clients/${NAME_CLIENT}/*|egrep -v  "authenticator_code.txt|sshpass.txt"`
+echo -e "CLIENT_USER: $NAME_CLIENT \nPASS: $PASS \n附件是证书，配置文件 \n安装文档 https://vpn.yappam.com"| mail -s "VPN USER AND PASS"  -a zip/$NAME_CLIENT.zip $EMAIL
+
 ```
 
 
