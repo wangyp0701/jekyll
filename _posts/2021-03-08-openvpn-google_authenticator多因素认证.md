@@ -123,7 +123,7 @@ echo "$PASS" > ${DIR_CLIENT}/sshpass.txt
 # run the google authenticator as the local user and save the code
 su ${NAME_CLIENT} -c "/usr/local/bin/google-authenticator -C -t -f -D -r 3 -Q UTF8 -R 30 -w 3 -l ${MFA_LABEL} -i vpn.yappam " > ${DIR_CLIENT}/authenticator_code.txt 
 
-TOKEN=`cat ${DIR_CLIENT}/authenticator_code.txt|awk 'NR==3{print $6}'`
+TOKEN=`awk 'NR==3{print $6}' ${DIR_CLIENT}/authenticator_code.txt`
 qrencode -o png/${NAME_CLIENT}.png -s 6 "otpauth://totp/${NAME_CLIENT}?secret=$TOKEN&issuer=vpn.yappam"
 
 #Email account, password, profile
