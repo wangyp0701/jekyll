@@ -1,8 +1,8 @@
 ---
 layout: post
 title: openvpn 
-date: 2021-03-08
-categories: blog
+date: 2021-03-12
+categories: vpn
 tags: [openvpn,google_authenticator]
 ---
 
@@ -14,7 +14,7 @@ tags: [openvpn,google_authenticator]
 
 * 产品种类
 
- 市面上有基于硬件的，也有基于软件的产品，具体可以另搜啊，本人喜欢开源的东东，并找到了Google开源的二次认证系统[Google Authenticator](https://github.com/google/google-authenticator) ，可以利用智能手机生产30秒动态口令配合登陆，该验证器提供了一个六位数的一次性密码。目前ios 和Android 都有客户端供于下载。
+ 市面上有基于硬件的，也有基于软件的产品，具体可以搜搜啊，本人喜欢开源的东东，并找到了Google开源的二次认证系统[Google Authenticator](https://github.com/google/google-authenticator) ，可以利用智能手机生产30秒动态口令配合登陆，该验证器提供了一个六位数的一次性密码。目前ios 和Android 都有客户端供于下载。
 
 * 功能
 
@@ -26,10 +26,10 @@ tags: [openvpn,google_authenticator]
 
 ## 安装openvpn google_authenticator_libpam
 
-* 我这里以centos7为例安装
+* 我这里以[centos7](https://www.centos.org/)为例安装
 
 ```bash
-yum install openvpn easy-rsa google-authenticator -y
+yum install openvpn easy-rsa qrencode google-authenticator -y
 ```
 
 ## 生成openvpn所需证书
@@ -60,13 +60,16 @@ set_var  EASYRSA_DIGEST        "sha256"
 
 *  启动PKI目录，并使用下面的命令建立CA密钥
 - ./easyrsa init-pki
-- ./easyrsa build-ca
+- ./easyrsa build-ca nopass
 * 并使用我们的CA证书签署“ vpn.example.org”密钥
 - ./easyrsa build-server-full  vpn.example.org nopass
 * 使用以下命令生成Diffie-Hellman密钥
 - ./easyrsa gen-dh
 * CRL（证书吊销列表）密钥将用于吊销客户端密钥
 - ./easyrsa gen-crl
+* 使用 tls-auth 要求您生成除标准RSA证书/密钥之外还使用的共享秘密密钥
+- openvpn --genkey --secret pki/ta.key
+
 
 
 
@@ -85,12 +88,11 @@ account required     pam_permit.so
 ```bash
 vim c-client.sh
 # set the variables we'll use later
-#NAME_CLIENT="client0016"
 read -p "请输入要创建的账户名:" NAME_CLIENT
+read -p "请输入邮箱:"  EMAIL
+
 MFA_LABEL="${NAME_CLIENT}"
 DIR_CLIENT="/etc/openvpn/clients/${NAME_CLIENT}"
-#EMAIL=$(read -p 请输入邮箱: )
-read -p "请输入邮箱:"  EMAIL
 
 # create the certificate and key
 if [ ! -d /home/$NAME_CLIENT ]; then
@@ -111,9 +113,13 @@ cp -v "/etc/openvpn/pki/private/${NAME_CLIENT}.key" "$DIR_CLIENT/"
  
 # copy and customize the client configuration
 cp -v "/etc/openvpn/template_client.conf" "${DIR_CLIENT}/${NAME_CLIENT}.ovpn"
-sed -i "s#CLIENT_NAME#${NAME_CLIENT}#g" "${DIR_CLIENT}/${NAME_CLIENT}.ovpn"
-sed -i "s#PLATFORM_NAME#vpn.example.org#g" "${DIR_CLIENT}/${NAME_CLIENT}.ovpn"
- 
+echo "<cert>" >> "${DIR_CLIENT}/${NAME_CLIENT}.ovpn"
+grep "BEGIN CERTIFICATE" -A 40 "$DIR_CLIENT/${NAME_CLIENT}.crt" >> "${DIR_CLIENT}/${NAME_CLIENT}.ovpn"
+echo "</cert>" >> "${DIR_CLIENT}/${NAME_CLIENT}.ovpn"
+echo "<key>" >> "${DIR_CLIENT}/${NAME_CLIENT}.ovpn" 
+cat "$DIR_CLIENT/${NAME_CLIENT}.key" >> "${DIR_CLIENT}/${NAME_CLIENT}.ovpn"
+echo "</key>" >> "${DIR_CLIENT}/${NAME_CLIENT}.ovpn"
+
 # create a new local user
 PASS=$(head -n 4096 /dev/urandom | tr -dc a-zA-Z0-9 | cut -b 1-20)
 useradd -m "${NAME_CLIENT}" 
@@ -128,9 +134,7 @@ qrencode -o png/${NAME_CLIENT}.png -s 6 "otpauth://totp/${NAME_CLIENT}?secret=$T
 
 #Email account, password, profile
 echo -e "附件是google-authenticator Token二维码，请勿泄漏给他人"| mail -s "google-authenticator Token" -a png/${NAME_CLIENT}.png $EMAIL
-#head -3 ${DIR_CLIENT}/authenticator_code.txt | mail -s "google-authenticator Token"  $EMAIL
 
-#zip -r zip/$NAME_CLIENT.zip `ls clients/${NAME_CLIENT}/*|grep -v -e authenticator_code.txt -e sshpass.txt`
 zip -rq zip/$NAME_CLIENT.zip `ls clients/${NAME_CLIENT}/*|egrep -v  "authenticator_code.txt|sshpass.txt"`
 echo -e "CLIENT_USER: $NAME_CLIENT \nPASS: $PASS \n附件是证书，配置文件 \n安装文档 https://vpn.yappam.com"| mail -s "VPN USER AND PASS"  -a zip/$NAME_CLIENT.zip $EMAIL
 
@@ -143,7 +147,7 @@ echo -e "CLIENT_USER: $NAME_CLIENT \nPASS: $PASS \n附件是证书，配置文�
 ```bash
 vim server.conf
 plugin "/usr/lib64/openvpn/plugins/openvpn-plugin-auth-pam.so" "openvpn login USERNAME password PASSWORD pin OTP"
-
+ 
 # tcp
 port 11940
 proto tcp
@@ -154,17 +158,22 @@ keepalive 10 900
 comp-lzo
 reneg-sec 0
  
+ 
 # log
-verb 3
+verb 4
 mute 10
 log-append /var/log/openvpn.log
 status openvpn-status.log
-  
+ 
+ 
 # crypto
-cipher AES-256-CFB8
+cipher AES-256-CBC
 auth SHA512
 tls-auth pki/ta.key 0
-tls-cipher TLS-DHE-RSA-WITH-AES-256-CBC-SHA
+
+tls-version-min 1.2
+tls-cipher TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384
+ 
  
 # certs
 ca pki/ca.crt
@@ -172,6 +181,7 @@ cert pki/issued/vpn.example.org.crt
 key pki/private/vpn.example.org.key
 dh pki/dh.pem
 crl-verify pki/crl.pem
+ 
  
 # networking
 server 10.1.1.0 255.255.255.0
@@ -185,23 +195,23 @@ ifconfig-pool-persist ipp.txt
 max-clients 100
 ```
 
-## client配置
+## template_client配置
 
 ```bash
-vim client.ovpn
+vim template_client.ovpn
 client
 # vpn concentrator
 remote vpn.yappam.com 11940
 # certificates, with path relative to the config file
 ca vpn.example.org.ca.crt
-cert client0006.crt
-key client0006.key
+#cert client0006.crt
+#key client0006.key
 auth-user-pass
 auth-nocache
 # generic stuff
 dev tun
 proto tcp
-nobind
+
 persist-key
 persist-tun
 nobind
@@ -210,13 +220,13 @@ verb 3
 mute 10
 reneg-sec 0 
 # crypto
-cipher AES-256-CFB8
+cipher AES-256-CBC
 tls-auth vpn.example.org.ta.key 1
-tls-cipher TLS-DHE-RSA-WITH-AES-256-CBC-SHA
+tls-cipher TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384
 remote-cert-tls server
 auth SHA512
 script-security 2
-static-challenge "Enter Google Authenticator Token" 1
+static-challenge "Enter Google-Authenticator Token" 1
 ```
 
 ## 启用端口转发内核模块
