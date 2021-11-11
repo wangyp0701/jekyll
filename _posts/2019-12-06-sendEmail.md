@@ -1,3 +1,12 @@
+---
+layout: post
+title: sendEmail使用TLS发送邮件
+date: 2019-11-26
+categories: blog
+tags: [sendEmail]
+description: 文章金句。
+---
+
 # sendEmail使用TLS发送邮件
 
 * 要下载支持TLS的版本`http://caspian.dotconf.net/menu/Software/SendEmail/sendEmail-v156.zip`
