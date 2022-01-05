@@ -79,14 +79,14 @@ optional arguments:
 
   * 测速并生成测速图片
 
-  ![markdown](https://wangyp.win/img/speedtest/20191126100605.png )
+  ![markdown](https://wangyp.cf/img/speedtest/20191126100605.png )
 
   * 指定节点进行测速
 
-  ![markdown](https://wangyp.win/img/speedtest/20191126101102.png)
+  ![markdown](https://wangyp.cf/img/speedtest/20191126101102.png)
 
   * 然后找到自己需要测速节点的编号，按下面命令进行指定节点速度测速
 
-   ![markdown](https://wangyp.win/img/speedtest/20191126101227.png)
+   ![markdown](https://wangyp.cf/img/speedtest/20191126101227.png)
 
 
