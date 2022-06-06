@@ -54,7 +54,7 @@ set_var  EASYRSA_ALGO        rsa
 set_var  EASYRSA_CA_EXPIRE    3650
 set_var  EASYRSA_CERT_EXPIRE    3650
 set_var  EASYRSA_CRL_DAYS    365
-set_var  EASYRSA_DIGEST        "sha256"
+set_var  EASYRSA_DIGEST    "sha256"
 ```
 
 
@@ -155,7 +155,7 @@ dev tun
 persist-key
 persist-tun
 keepalive 10 900
-comp-lzo
+#comp-lzo
 reneg-sec 0
  
  
@@ -215,7 +215,7 @@ proto tcp
 persist-key
 persist-tun
 nobind
-comp-lzo
+#comp-lzo
 verb 3
 mute 10
 reneg-sec 0 
