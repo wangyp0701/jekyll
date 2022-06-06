@@ -29,7 +29,7 @@ tags: [openvpn,google_authenticator]
 * 我这里以[centos7](https://www.centos.org/)为例安装
 
 ```bash
-yum install openvpn easy-rsa qrencode google-authenticator -y
+yum install openvpn easy-rsa qrencode zip google-authenticator -y
 ```
 
 ## 生成openvpn所需证书
@@ -201,7 +201,7 @@ max-clients 100
 vim template_client.ovpn
 client
 # vpn concentrator
-remote vpn.yappam.com 11940
+remote 166.3.3.3 11940
 # certificates, with path relative to the config file
 ca vpn.example.org.ca.crt
 #cert client0006.crt
