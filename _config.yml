@@ -32,6 +32,16 @@ nightMode: false
 comments:
   disqus: false
   disqus_url: 'https://de-guo.disqus.com/embed.js'
+  
+# 整合 utterances 评论
+utterance:
+  enable: true
+# 仓库名字，格式：[user-name]/[repo-name]，如：lanweihong/utterance_repo
+  repo: wangyp0701/blog-comment
+# 主题
+  theme: github-light
+# 映射配置
+  issue_term: pathname
 
 # MathJax 公式支持 by Ray-Eldath
 mathjax: true
