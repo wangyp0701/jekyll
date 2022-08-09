@@ -3,7 +3,14 @@
 {% include baidu-anaylysis.html %}
 {% include post-head.html %}
 
-
+<script src="https://utteranc.es/client.js"
+        repo="wangyp0701/blog-comment"
+        issue-term="pathname"
+        label="comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
 
 <body>
   <!--[if lt IE 10]>
@@ -124,14 +131,7 @@
       wechatQrcodeHelper: '<p>扫码后点击右上角</p><p>将本文分享至朋友圈</p>'
     });
   </script>
-  <script src="https://utteranc.es/client.js"
-        repo="wangyp0701/blog-comment"
-        issue-term="pathname"
-        label="comment"
-        theme="github-light"
-        crossorigin="anonymous"
-        async>
-</script>
+  
 
   {% if site.comments.disqus %}
   <script>
