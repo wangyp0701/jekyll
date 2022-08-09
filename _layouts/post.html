@@ -3,14 +3,6 @@
 {% include baidu-anaylysis.html %}
 {% include post-head.html %}
 
-<script src="https://utteranc.es/client.js"
-        repo="wangyp0701/blog-comment"
-        issue-term="pathname"
-        label="comment"
-        theme="github-light"
-        crossorigin="anonymous"
-        async>
-</script>
 
 <body>
   <!--[if lt IE 10]>
@@ -108,6 +100,15 @@
       </div>
       {% endif %}
     </section>
+    <script src="https://utteranc.es/client.js"
+        repo="wangyp0701/blog-comment"
+        issue-term="pathname"
+        label="comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
     {% if site.comments.disqus %}
     <section class="post-footer-item comment">
         <div id="disqus_thread"></div>
