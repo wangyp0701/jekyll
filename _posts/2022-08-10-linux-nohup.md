@@ -1,7 +1,7 @@
 ---
 layout: post
 title: linux进程后台运行
-date: 2022-08-10 17:25:15
+date: 2022-08-10 10:25:15
 tags: [setsid nohup]
 ---
 
