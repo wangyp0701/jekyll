@@ -119,5 +119,7 @@ nohup ping www.baidu.com &!
 此时，将stdout和stderr重定向到文件`a.log`中，文件`a.log`不受终端关闭的影响。如果进程依赖于stdin，意思是进程需要由于键盘输入，那就说明这是个交互式程序，交互式程序后台运行就没多大意义了。
 
 # 参考链接
+
 [Linux 技巧：让进程在后台可靠运行的几种方法](https://www.ibm.com/developerworks/cn/linux/l-cn-nohup/index.html)
+
 [Difference between nohup, disown and &](https://unix.stackexchange.com/questions/3886/difference-between-nohup-disown-and)
