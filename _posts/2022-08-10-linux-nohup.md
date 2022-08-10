@@ -2,7 +2,8 @@
 layout: post
 title: linux进程后台运行
 date: 2022-08-10 10:25:15
-tags: [setsid nohup]
+categories: blog
+tags: [setsid,nohup]
 ---
 
 在linux上启动Web服务，当退出终端后，Web服务进程也会随着关闭。产生这种问题的原因在于，当用户注销或者网络断开后，终端后收到挂断信号（SIGHUP）,并向子进程广播SIGHUP信号，子进程收到SIGHUP信号而关闭。因此，让linux后台持续运行的方法有以下几种：
