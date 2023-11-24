@@ -17,7 +17,7 @@ tags: [cert-manager,Ingress,dns01,http01]
 
 * 配置ClusterIssuer
 
-  [ClusterIssuer](https://cert-manager.readthedocs.io/en/latest/reference/clusterissuers.html)是[Issuer](https://cert-manager.readthedocs.io/en/latest/reference/issuers.html)的集群范围版本。[证书](https://cert-manager.readthedocs.io/en/latest/reference/certificates.html)资源可以在任何命名空间中引用它。
+  [ClusterIssuer](https://cert-manager.io/docs/concepts/issuer/)是[Issuer](https://cert-manager.io/docs/concepts/issuer/)的集群范围版本。[证书](https://cert-manager.io/docs)资源可以在任何命名空间中引用它。
   
   ```bash
   apiVersion: cert-manager.io/v1alpha2
