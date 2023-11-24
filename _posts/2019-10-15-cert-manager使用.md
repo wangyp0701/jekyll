@@ -45,7 +45,7 @@ tags: [cert-manager,Ingress,dns01,http01]
  - Route53 
  - DigitalOcean
  - RFC2136
- - 详情查看[https://cert-manager.io/docs/configuration/acme/dns01/] (https://cert-manager.io/docs/configuration/acme/dns01/)
+ - 详情查看 [https://cert-manager.io/docs/configuration/acme/dns01/](https://cert-manager.io/docs/configuration/acme/dns01/)
 
   ```bash
 apiVersion: cert-manager.io/v1alpha2
